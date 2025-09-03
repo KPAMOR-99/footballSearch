@@ -2,11 +2,13 @@ import type { ReactNode } from "react"
 
 interface props {
     children: ReactNode
+    className?: string
 }
 
-const Container = ({ children, }:props) => {
+const Container = ({ children, className }:props) => {
   return (
-    <div className="m-2 p-2 flex flex-col gap-3 h-screen items-center justify-center bg-sky-200 border rounded-md shadow">
+    <div className= { `m-2 p-2 rounded-sm ${className}`}>
+    
         { children }
     </div>
   )

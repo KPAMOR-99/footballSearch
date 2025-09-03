@@ -6,15 +6,15 @@ interface searchItem {
 
 const SubmitBtn = ({ content }: searchItem) => {
   console.log(content);
-  const getPost = async () => {
-    api.get(`/posts/${content}`).then((response) => console.log(response));
+  const getPlayer = async () => {
+    api.get(`/searchplayers.php?p=${content}`).then((response) => console.log(response));
   };
 
   return (
     <button
       type="submit"
       className=" p-2 border rounded bg-green-400 hover:bg-green-900 "
-      onClick={getPost}
+      onClick={getPlayer}
     >
       search
     </button>

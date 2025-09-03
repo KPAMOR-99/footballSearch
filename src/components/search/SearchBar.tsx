@@ -1,30 +1,32 @@
-import { type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
+import Input from "./input";
+import SubmitBtn from "./SubmitBtn";
+import Container from "../Container";
 
+const SearchBar = () => {
+  // had to do this in this parent component since searchbar and btn need props from same parent
+  const [content, setContent] = useState<string | number>("enter text");
 
-interface props {
-  content: string
-  renderInput: (e: ChangeEvent<HTMLInputElement>)=> void,
-  handleFocus: ()=> void
-}
-
-
-const SearchBar = ({ content, renderInput, handleFocus}: props) => {
+ 
+  const handleFocus = () => setContent("");
+  
+  const renderInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value);
+  };
 
   return (
-    <div className="mt-15">
-      <form action="" className="flex gap-2">
-        <input
-          type="text"
-          value={content}
-          onChange={renderInput}
-          onFocus={ handleFocus}
-          
-          className="bg-white border rounded p-2 "
+    <>
+      <Container className="flex gap-2">
+        <Input
+          content={String(content)}
+          renderInput={renderInput}
+          handleFocus={handleFocus}
+        
         />
-       
-      </form>
-    </div>
-  );
-};
+        <SubmitBtn content={content} />
+      </Container>
+    </>
+  )
+}
 
 export default SearchBar;

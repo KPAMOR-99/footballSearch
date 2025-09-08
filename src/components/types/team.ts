@@ -27,5 +27,5 @@ export interface Team {
 }
 
 export interface TeamJSON {
-  team: Team[]
+  teams: Team[]
 }

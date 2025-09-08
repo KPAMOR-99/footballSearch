@@ -4,73 +4,82 @@ const ClubProfile = () => {
   const { state } = useLocation();
   const teamData = state?.teamData;
 
-  console.log(teamData);
-
   if (!teamData || !teamData.team || teamData.team.length === 0) {
     return (
       <div className="min-h-screen bg-gray-900 text-white p-4 flex items-center justify-center">
-        <h2>No team data found. Please search for a team.</h2>
+        <h2 className="text-xl font-semibold">
+          No team data found. Please search for a team.
+        </h2>
       </div>
-    )
+    );
   }
+
   const team = teamData.team[0];
-  console.log(team)
 
   return (
-    <div className="w-full text-white">
-      <ul>
-        <li>{team.strSport}</li>
-      </ul>
-      {/*      
-      <div 
-        className="relative h-64 flex items-center justify-center"
-        style={{ backgroundImage: `url(${team.fanart})`, backgroundSize: "cover" }}
+    <div className="min-h-screen bg-gray-900 text-white">
+
+      {/* Header with fanart */}
+      <div
+        className="relative h-64 flex items-center justify-center bg-gray-800"
+        style={{
+          backgroundImage: team.strTeamFanart1
+            ? `url(${team.strTeamFanart1})`
+            : "none",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       >
-        <div className="bg-black/60 p-4 rounded-xl flex items-center gap-4">
-          <img src={team.badge} alt={team.name} className="w-20 h-20" />
-          <div>
-            <h1 className="text-3xl font-bold">{team.name}</h1>
-            <p>{team.country} • Founded {team.founded}</p>
-            <p>{team.stadium} ({team.capacity})</p>
-          </div>
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="relative z-10 flex flex-col items-center gap-3">
+          {team.strTeamBadge && (
+            <img
+              src={team.strTeamBadge}
+              alt={team.strTeam}
+              className="w-28 h-28 object-contain drop-shadow-lg"
+            />
+          )}
+          <h1 className="text-3xl font-bold">{team.strTeam}</h1>
+          <p className="text-gray-300">
+            {team.strCountry} -- {team.strSport}
+          </p>
         </div>
       </div>
-      */}
 
-      {/* Overview 
-      <div className="grid grid-cols-3 gap-6 p-6 bg-gray-900">
-        <div>
-          <h2 className="font-semibold">Location</h2>
-          <p>{team.location}</p>
+      {/* Overview section */}
+      <div className="max-w-5xl mx-auto p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-gray-800 rounded-xl p-4 shadow">
+          <h2 className="text-lg font-semibold mb-2">Founded</h2>
+          <p>{team.intFormedYear || "N/A"}</p>
         </div>
-        <div className="flex items-center justify-center">
-          <img src={team.badge} alt="badge" className="w-32 h-32" />
-        </div>
-        <div>
-          <h2 className="font-semibold">League</h2>
-          <p>{team.league}</p>
-          
-        </div>
-      </div>
-      */}
 
-      {/* About 
-      <div className="p-6 bg-gray-800">
-        <h2 className="text-xl font-bold mb-2">About</h2>
-        <p className="text-sm leading-relaxed">{team.description}</p>
-      </div>
-      */}
+        <div className="bg-gray-800 rounded-xl p-4 shadow">
+          <h2 className="text-lg font-semibold mb-2">Stadium</h2>
+          <p className="font-medium">{team.strStadium}</p>
+          <p className="text-sm text-gray-400">
+            {team.intStadiumCapacity
+              ? `${team.intStadiumCapacity} capacity`
+              : "Capacity unknown"}
+          </p>
+        </div>
 
-      {/* Social Links 
-      <div className="flex gap-4 p-6 bg-gray-900">
-        <a href={team.socials.website} className="underline">Website</a>
-        <a href={team.socials.twitter} className="underline">Twitter</a>
-        <a href={team.socials.instagram} className="underline">Instagram</a>
-        <a href={team.socials.youtube} className="underline">YouTube</a>
+        <div className="bg-gray-800 rounded-xl p-4 shadow">
+          <h2 className="text-lg font-semibold mb-2">League</h2>
+          <p>{team.strLeague}</p>
+        </div>
       </div>
-      */}
+
+      {/* About section */}
+      <div className="max-w-5xl mx-auto p-6">
+        <div className="bg-gray-800 rounded-xl p-6 shadow">
+          <h2 className="text-xl font-bold mb-3">About</h2>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            {team.strDescriptionEN || "No description available."}
+          </p>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default ClubProfile;

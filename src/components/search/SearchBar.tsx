@@ -5,11 +5,11 @@ import Input from "./Input";
 import SubmitBtn from "./SubmitBtn";
 import Container from "../Container";
 import Suggestions from "./Suggestions";
-import { type PlayerJSON } from "../types/player";
-import { type TeamJSON } from "../types/team";
+import { type Player, type PlayerJSON } from "../types/player";
+import { type Team, type TeamJSON } from "../types/team";
 
 const SearchBar = () => {
-  // states for managing user input, the resutls gotten from the search and the type of search either player or tea thatll determine the api endpint to be used for the search
+  // states for managing user input, the resutls gotten from the search and the type of search either player or team thatll determine the api endpint to be used for the search
   const [content, setContent] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [searchType, setSearchType] = useState<"player" | "team">("player");
@@ -36,12 +36,11 @@ const SearchBar = () => {
           `/searchplayers.php?p=${value}`
         );
         setResults(response.data.player || []);
-        console.log(results)
-        
+        console.log(response.data.player); 
       } else {
         const response = await api.get<TeamJSON>(`/searchteams.php?t=${value}`);
-        setResults(response.data.team || []);
-        console.log(results)
+        setResults(response.data.teams || []);
+        console.log(response.data.teams);
       }
     } catch (err) {
       console.error("Suggestion fetch failed", err);
@@ -49,33 +48,45 @@ const SearchBar = () => {
     }
   };
 
-  // here if the button is cliked without selecting any of the suggestions itll just direct you to the first result in the array of result
-  
-const handleSearch = async () => {
-  if (!content) return;
-
-  try {
+  // lifted up navigation logic so both suggestions and search button use the same function
+  const handleClick = (item: Player | Team) => {
     if (searchType === "player") {
-      const response = await api.get<PlayerJSON>(`/searchplayers.php?p=${content}`);
-      const players = response.data.player || [];
-      if (players.length > 0) {
-        navigate("/playerProfile", {
-          state: { playerData: { player: [players[0]] } },
-        });
-      }
-    } else if (searchType === "team") {
-      const response = await api.get<TeamJSON>(`/searchteams.php?t=${content}`);
-      const teams = response.data.team || [];
-      if (teams.length > 0) {
-        navigate("/clubProfile", {
-          state: { teamData: { team: [teams[0]] } },
-        });
-      }
+      navigate("/playerProfile", {
+        state: { playerData: { player: [item as Player] } },
+      });
+    } else {
+      navigate("/clubProfile", {
+        state: { teamData: { team: [item as Team] } },
+      });
     }
-  } catch (err) {
-    console.error("Search failed", err);
-  }
-};
+  };
+
+  // here if the button is cliked without selecting any of the suggestions itll just direct you to the first result in the array of result
+  const handleSearch = async () => {
+    if (!content) return;
+
+    try {
+      if (searchType === "player") {
+        const response = await api.get<PlayerJSON>(
+          `/searchplayers.php?p=${content}`
+        );
+        const players = response.data.player || [];
+        if (players.length > 0) {
+          handleClick(players[0]);
+        }
+      } else if (searchType === "team") {
+        const response = await api.get<TeamJSON>(
+          `/searchteams.php?t=${content}`
+        );
+        const teams = response.data.teams || [];
+        if (teams.length > 0) {
+          handleClick(teams[0]);
+        }
+      }
+    } catch (err) {
+      console.error("Search failed", err);
+    }
+  };
 
   return (
     <Container className="relative flex flex-col gap-2 items-center justify-center">
@@ -99,25 +110,18 @@ const handleSearch = async () => {
         </label>
       </div>
       <Container className="flex flex-row gap-2 ">
-          <div className="relative w-full ">
-        <Input
-          content={content}
-          renderInput={renderInput}
-          handleFocus={handleFocus}
-        />
-        <Suggestions results={results} type={searchType}  />
-      </div>
+        <div className="relative w-full ">
+          <Input
+            content={content}
+            renderInput={renderInput}
+            handleFocus={handleFocus}
+          />
+          <Suggestions results={results} type={searchType} onSelect={handleClick} />
+        </div>
 
-      
-      <SubmitBtn handleSearch={handleSearch}  />
-
+        <SubmitBtn handleSearch={handleSearch} />
       </Container>
-
-    
-
-
-  </Container>
-    
+    </Container>
   );
 };
 

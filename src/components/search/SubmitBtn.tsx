@@ -1,24 +1,25 @@
-import api from "../api";
 
-interface searchItem {
-  content: string | number
+
+interface props {
+
+  handleSearch: () => void
 }
 
-const SubmitBtn = ({ content }: searchItem) => {
-  console.log(content);
-  const getPlayer = async () => {
-    api.get(`/searchplayers.php?p=${content}`).then((response) => console.log(response));
-  };
+
+
+
+const SubmitBtn = ( { handleSearch }: props) => {
+
 
   return (
     <button
       type="submit"
       className=" p-2 border rounded bg-green-400 hover:bg-green-900 "
-      onClick={getPlayer}
+      onClick={handleSearch}
     >
       search
     </button>
-  );
-};
+  )
+}
 
 export default SubmitBtn;

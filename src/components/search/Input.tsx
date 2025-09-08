@@ -1,5 +1,6 @@
 import { type ChangeEvent } from "react";
 
+
 interface props {
   content: string;
   renderInput: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -18,7 +19,7 @@ const Input = ({ content, renderInput, handleFocus, }: props) => {
         className="bg-white border rounded p-2 "
       />
     </form>
-  );
-};
+  )
+}
 
 export default Input;

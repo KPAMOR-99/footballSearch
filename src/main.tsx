@@ -8,7 +8,8 @@ import PlayerProfile from "./pages/PlayerProfile.tsx";
 import ClubProfile from "./pages/ClubProfile.tsx";
 
 
-// provides routes for the web app, okay
+
+// provides routes for the various pages in this web app
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,3 +30,4 @@ createRoot(document.getElementById("root")!).render(
     <RouterProvider router={router} />
   </StrictMode>
 );
+

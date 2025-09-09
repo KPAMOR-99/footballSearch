@@ -15,32 +15,36 @@ const ClubProfile = () => {
   }
 
   const team = teamData.team[0];
+ 
+
+ console.log("Team data:", team);
+  
+ 
+
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
 
-      {/* Header with fanart */}
+      {/* Header with fanart but its not showing for some reason */}
       <div
-        className="relative h-64 flex items-center justify-center bg-gray-800"
+        className="relative h-64 flex items-center justify-center"
         style={{
-          backgroundImage: team.strTeamFanart1
-            ? `url(${team.strTeamFanart1})`
-            : "none",
+          backgroundImage: `url(${team.strFanart1})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="relative z-10 flex flex-col items-center gap-3">
-          {team.strTeamBadge && (
+        <div className="absolute inset-0 " />
+        <div className="relative z-10 flex flex-col items-center gap-3  bg-grey-800">
+          {team.strBadge && (
             <img
-              src={team.strTeamBadge}
+              src={team.strBadge}
               alt={team.strTeam}
               className="w-28 h-28 object-contain drop-shadow-lg"
             />
           )}
-          <h1 className="text-3xl font-bold">{team.strTeam}</h1>
-          <p className="text-gray-300">
+          <h1 className="text-3xl font-bold text-white">{team.strTeam}</h1>
+          <p className="text-white">
             {team.strCountry} -- {team.strSport}
           </p>
         </div>

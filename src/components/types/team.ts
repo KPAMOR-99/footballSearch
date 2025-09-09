@@ -6,7 +6,6 @@ export interface Team {
   intFormedYear?: string
   strSport?: string
   strLeague?: string
-  idLeague?: string
   strStadium?: string
   strLocation?: string
   intStadiumCapacity?: string
